@@ -1,29 +1,30 @@
-// Substitua pela sua URL atual do ngrok (sempre terminando com /)
+// ATENÇÃO: Verifique se a URL do ngrok está correta (sempre com / no final)
 const API_URL = "https://lingually-categorical-latisha.ngrok-free.dev/";
 
-// 1. MONITORAMENTO: Registra assim que ela abre o site
+// 1. Quando a página carrega, já busca a história do dia
 window.onload = () => {
-    fetch(`${API_URL}log-acesso`)
-        .then(() => console.log("Acesso registrado!"))
-        .catch(err => console.error("Erro ao logar acesso:", err));
+    // Registra o acesso inicial
+    fetch(`${API_URL}log-acesso`).catch(err => console.error("Erro log:", err));
+    
+    // Tenta carregar a história automaticamente
+    verificarOuGerar(true); 
 };
 
-async function gerarMomentoMagico() {
+async function verificarOuGerar(isAutoLoad = false) {
     const botao = document.getElementById('btn-gerar');
     const areaTexto = document.getElementById('texto-da-historia');
     const areaImagem = document.getElementById('imagem-da-historia');
     const carregando = document.getElementById('loading');
 
-    // Feedback visual de carregamento
-    botao.disabled = true;
-    botao.innerText = "Criando nossa magia...";
-    if (carregando) carregando.style.display = 'block';
+    // Se for clique no botão, mostra o loading
+    if (!isAutoLoad) {
+        botao.disabled = true;
+        botao.innerText = "Buscando nossa magia...";
+        carregando.style.display = 'block';
+    }
 
     try {
-        // 2. MONITORAMENTO: Registra o clique no botão
-        await fetch(`${API_URL}registrar-clique-botao`, { method: 'POST' });
-
-        // 3. GERAÇÃO: Chama a IA no servidor
+        // Chama o servidor (ele decide se cria uma nova ou manda a que já existe)
         const response = await fetch(`${API_URL}gerar-momento`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
@@ -32,20 +33,33 @@ async function gerarMomentoMagico() {
         const data = await response.json();
 
         if (data.sucesso) {
-            // Exibe o texto e a imagem que vieram do servidor
+            // Preenche o texto e a imagem
             areaTexto.innerText = data.texto;
             areaImagem.src = data.imagem;
-            areaImagem.style.display = 'block'; // Garante que a imagem apareça
-        } else {
-            areaTexto.innerText = "Houve um probleminha na nossa magia, tente de novo! ❤️";
-        }
+            areaImagem.style.display = 'block';
 
+            // Se a história já existia (ela já tinha clicado hoje antes)
+            if (data.jaExistia) {
+                botao.innerText = "Sua mensagem de hoje já chegou ❤️";
+                botao.disabled = true;
+            } else {
+                botao.innerText = "A surpresa de hoje chegou!";
+                botao.disabled = true;
+            }
+        }
     } catch (error) {
-        console.error("Erro:", error);
-        areaTexto.innerText = "O servidor está descansando. Tente novamente em instantes!";
+        console.error("Erro na conexão:", error);
+        if (!isAutoLoad) {
+            areaTexto.innerText = "O servidor está descansando. Ligue o Node.js no PC!";
+        }
     } finally {
-        botao.disabled = false;
-        botao.innerText = "Gerar Novo Momento";
-        if (carregando) carregando.style.display = 'none';
+        if (!isAutoLoad) {
+            carregando.style.display = 'none';
+        }
     }
+}
+
+// Função chamada pelo clique do botão no HTML
+function gerarMomentoMagico() {
+    verificarOuGerar(false);
 }

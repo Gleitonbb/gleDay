@@ -39,41 +39,39 @@ app.post('/registrar-clique-botao', async (req, res) => {
 
 app.post('/gerar-momento', async (req, res) => {
     try {
-        console.log("🚀 Iniciando geração baseada na foto real...");
+        console.log("🧪 MODO TESTE: Sorteando imagem da pasta...");
 
-        // 1. URL da sua foto (Ela precisa estar no seu GitHub Pages para a IA enxergar)
-        // Substitua 'seu-usuario' pelo seu nome no GitHub
-        const urlFotoReal = "https://seu-usuario.github.io/historias-gleiton-daiane/imagem/gleiDay.jpeg";
-
-        // 2. O Prompt agora pede para a IA se basear na foto
-        const promptImg = `Based on this photo ${urlFotoReal}, create a romantic cinematic scene of this couple, sunset, highly detailed, realistic, 4k`;
-        const seedImg = Math.floor(Math.random() * 1000000);
+        // 1. SORTEIO DE TESTE: Sorteia um número entre 01 e 04 (ou a quantidade que você tiver)
+        // Mude o '4' para a quantidade de fotos que você já subiu na pasta imagem
+        const numeroSorteado = Math.floor(Math.random() * 4) + 1; 
+        const numeroFoto = String(numeroSorteado).padStart(2, '0');
         
-        const urlImagemFinal = `https://image.pollinations.ai/prompt/${encodeURIComponent(promptImg)}?width=1024&height=1024&seed=${seedImg}&nologo=true`;
+        const urlImagemLocal = `https://gleitonbb.github.io/gleDay/imagem/gleDay${numeroFoto}.jpeg`;
+        console.log(`📸 Usando imagem: gleDay${numeroFoto}.jpeg`);
 
-        // 3. Gera o Texto
+        // 2. GERAÇÃO DE TEXTO (IA continua ativa)
         const seedTexto = Math.floor(Math.random() * 1000000);
-        const promptTexto = encodeURIComponent("Escreva uma mensagem romântica curta para Gleiton e Daiane. Em português.");
+        const promptTexto = encodeURIComponent(`Escreva uma mensagem romântica curta e inédita para Gleiton e Daiane. Em português.`);
         const respTexto = await axios.get(`https://text.pollinations.ai/${promptTexto}?seed=${seedTexto}`);
-        const textoFinal = respTexto.data;
+        const textoGerado = respTexto.data;
 
-        // 4. SALVA NO BANCO
+        // 3. SALVA NO BANCO (Apenas para registro, sem travar o dia)
         await db.execute(
             'INSERT INTO historias_geradas (titulo, conteudo_historia, caminho_foto_1) VALUES (?, ?, ?)',
-            ['Nosso Momento Real', textoFinal, urlImagemFinal]
+            [`Teste Foto ${numeroFoto}`, textoGerado, urlImagemLocal]
         );
 
-        console.log("✨ Magia concluída usando sua foto como base!");
-
+        // Retorna SEM a trava de "jaExistia" para você testar várias vezes
         res.json({ 
             sucesso: true,
-            texto: textoFinal, 
-            imagem: urlImagemFinal 
+            texto: textoGerado, 
+            imagem: urlImagemLocal,
+            jaExistia: false 
         });
 
     } catch (error) {
-        console.error("❌ Erro:", error.message);
-        res.status(500).json({ error: "Erro na geração." });
+        console.error("❌ Erro no teste:", error.message);
+        res.status(500).json({ error: "Erro ao testar." });
     }
 });
 app.listen(port, () => {
