@@ -19,59 +19,40 @@ app.use(cors());
 app.use(express.json());
 
 // --- MONITORAMENTO ---
-app.get('/log-acesso', async (req, res) => {
-    try {
-        await db.execute('INSERT INTO monitoramento (tipo_evento) VALUES (?)', ['VISUALIZOU_SITE']);
-        console.log("✅ Ela abriu o site!");
-        res.sendStatus(200);
-    } catch (err) { res.sendStatus(500); }
-});
-
-app.post('/registrar-clique-botao', async (req, res) => {
-    try {
-        await db.execute('INSERT INTO monitoramento (tipo_evento) VALUES (?)', ['CLICOU_BOTAO']);
-        console.log("🖱️ Ela clicou no botão!");
-        res.sendStatus(200);
-    } catch (err) { res.sendStatus(500); }
-});
-
-// --- GERAÇÃO DO MOMENTO ---
-
 app.post('/gerar-momento', async (req, res) => {
     try {
-        console.log("🧪 MODO TESTE: Sorteando imagem da pasta...");
+        console.log("🚀 Buscando imagem oculta no GitHub...");
 
-        // 1. SORTEIO DE TESTE: Sorteia um número entre 01 e 04 (ou a quantidade que você tiver)
-        // Mude o '4' para a quantidade de fotos que você já subiu na pasta imagem
-        const numeroSorteado = Math.floor(Math.random() * 4) + 1; 
+        // 1. Sorteio para teste (entre 01 e 03 - ajuste se tiver mais fotos)
+        const numeroSorteado = Math.floor(Math.random() * 3) + 1; 
         const numeroFoto = String(numeroSorteado).padStart(2, '0');
         
-        const urlImagemLocal = `https://gleitonbb.github.io/gleDay/imagem/gleDay${numeroFoto}.jpeg`;
-        console.log(`📸 Usando imagem: gleDay${numeroFoto}.jpeg`);
+        // Usando o link RAW para garantir que a imagem apareça sem erro 404
+        const urlImagemLocal = `https://raw.githubusercontent.com/gleitonbb/gleDay/main/imagem/gleDay${numeroFoto}.jpeg`;
+        
+        console.log(`📸 Revelando a foto: gleDay${numeroFoto}.jpeg`);
 
-        // 2. GERAÇÃO DE TEXTO (IA continua ativa)
+        // 2. IA de Texto
         const seedTexto = Math.floor(Math.random() * 1000000);
-        const promptTexto = encodeURIComponent(`Escreva uma mensagem romântica curta e inédita para Gleiton e Daiane. Em português.`);
+        const promptTexto = encodeURIComponent(`Escreva uma mensagem romântica curta e emocionante para Gleiton e Daiane. Em português.`);
         const respTexto = await axios.get(`https://text.pollinations.ai/${promptTexto}?seed=${seedTexto}`);
         const textoGerado = respTexto.data;
 
-        // 3. SALVA NO BANCO (Apenas para registro, sem travar o dia)
+        // 3. Salva no Banco
         await db.execute(
             'INSERT INTO historias_geradas (titulo, conteudo_historia, caminho_foto_1) VALUES (?, ?, ?)',
-            [`Teste Foto ${numeroFoto}`, textoGerado, urlImagemLocal]
+            [`Teste Surpresa ${numeroFoto}`, textoGerado, urlImagemLocal]
         );
 
-        // Retorna SEM a trava de "jaExistia" para você testar várias vezes
         res.json({ 
             sucesso: true,
             texto: textoGerado, 
-            imagem: urlImagemLocal,
-            jaExistia: false 
+            imagem: urlImagemLocal 
         });
 
     } catch (error) {
-        console.error("❌ Erro no teste:", error.message);
-        res.status(500).json({ error: "Erro ao testar." });
+        console.error("❌ Erro:", error.message);
+        res.status(500).json({ error: "Erro ao revelar imagem." });
     }
 });
 app.listen(port, () => {
