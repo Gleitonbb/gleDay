@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Meu Painel de Controle</title>
+ <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <h1>Controle do Projeto GleDay</h1>
+
+    <div class="card stats">
+        <div class="stat-box">
+            <h3>Visualizações Daiane</h3>
+            <h2 id="v-daiane">0</h2>
+        </div>
+        <div class="stat-box">
+            <h3>Meus Acessos</h3>
+            <h2 id="v-admin">0</h2>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Configurar Próxima Surpresa</h3>
+        <label>Número da Foto (ex: 05)</label>
+        <input type="text" id="input-foto" placeholder="Ex: 01">
+        
+        <label>Tema para a IA escrever</label>
+        <textarea id="input-tema" rows="4" placeholder="Ex: Fale sobre nossa viagem para a praia..."></textarea>
+        
+        <button onclick="salvarConfig()">Atualizar Site Agora</button>
+    </div>
+ <script src="admin.js"></script>
+</body>
+</html>
