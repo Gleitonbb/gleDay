@@ -1,81 +1,64 @@
-/* Estilo Geral */
+/* Reset básico para mobile */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
+    background: linear-gradient(135deg, #fce4ec, #f8bbd0); /* Fundo rosa pastel */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #fceabb 0%, #f8b500 100%);
-    margin: 0;
-    padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    color: #4a2c2c;
+    padding: 20px;
 }
 
-.container {
+.container { width: 100%; max-width: 450px; }
+
+.card-romantico {
+    background: white;
+    border-radius: 25px;
+    padding: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
     text-align: center;
-    max-width: 500px;
-    width: 100%;
 }
 
-h1 {
-    font-family: 'Brush Script MT', cursive;
-    font-size: 2.5rem;
-    color: #8B0000;
+.titulo {
+    color: #d81b60;
+    font-size: 1.5rem;
     margin-bottom: 20px;
 }
 
-.content-box {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 25px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-}
-
-/* Container da Imagem */
-.image-wrapper {
-    position: relative;
-    margin-bottom: 20px;
-}
-
-#fotoGerada {
+.moldura-foto {
     width: 100%;
+    aspect-ratio: 1 / 1; /* Mantém a foto quadrada como no Instagram */
+    background: #fdf2f8;
     border-radius: 15px;
-    border: 4px solid #fff;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    transition: opacity 0.5s ease;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 4px solid #fce4ec;
 }
 
-/* Spinner de Carregamento */
-.spinner {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 40px;
-    height: 40px;
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #FF69B4;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+#imagem-da-historia {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Faz a foto preencher o espaço sem distorcer */
 }
 
-@keyframes spin {
-    0% { transform: translate(-50%, -50%) rotate(0deg); }
-    100% { transform: translate(-50%, -50%) rotate(360deg); }
+.conteudo {
+    margin: 20px 0;
+    min-height: 80px;
 }
 
-/* Texto e Botão */
-#textoHistoria {
-    font-size: 1.05rem;
+#texto-da-historia {
+    color: #4a4a4a;
     line-height: 1.6;
-    margin-bottom: 25px;
-    color: #444;
-    min-height: 60px;
+    font-size: 1.1rem;
+    font-style: italic;
 }
 
 button {
-    background-color: #FF69B4;
+    background: #e91e63;
     color: white;
     border: none;
     padding: 15px 30px;
@@ -83,21 +66,19 @@ button {
     font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
-    transition: all 0.3s ease;
+    transition: transform 0.2s, background 0.2s;
+    width: 100%;
 }
 
-button:hover {
-    background-color: #ff4f8c;
-    transform: scale(1.05);
+button:active { transform: scale(0.95); }
+button:disabled { background: #bdbdbd; cursor: not-allowed; }
+
+/* Animação de entrada */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-.footer-icon {
-    margin-top: 20px;
-    opacity: 0.5;
+#imagem-da-historia, #texto-da-historia {
+    animation: fadeIn 0.8s ease forwards;
 }

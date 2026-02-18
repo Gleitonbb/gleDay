@@ -2,32 +2,45 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nosso Momento - Gleiton & Daiane</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nosso Momento Magico ❤️</title>
+    
     <link rel="stylesheet" href="style.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div class="container">
-        <h1>Gleiton & Daiane</h1>
-        <p class="intro">Clique para ver o que o destino preparou para nós hoje.</p>
+        <div class="card-romantico">
+            <header>
+                <h1 class="titulo-principal">Para Daiane</h1>
+                <p class="subtitulo">Um pedaço da nossa história, todo dia.</p>
+            </header>
 
-        <button id="btn-gerar" onclick="gerarMomentoMagico()">Gerar Momento Especial</button>
+            <div class="moldura-foto">
+                <img id="imagem-da-historia" src="" alt="Nossa Foto Especial">
+                <div id="placeholder-vazio">
+                    <span>❤️</span>
+                </div>
+            </div>
 
-        <div id="loading">✨ Escrevendo nossa história...</div>
+            <div class="conteudo-texto">
+                <p id="texto-da-historia">Toque no botão para revelar nossa mensagem de hoje...</p>
+            </div>
 
-        <div id="resultado">
-            <p id="texto-da-historia">Sua surpresa aparecerá aqui...</p>
-            <img id="imagem-da-historia" src="" alt="Nossa Imagem Mágica">
+            <div class="acoes">
+                <button id="btn-gerar" onclick="gerarMomentoMagico()">
+                    Revelar Surpresa de Hoje
+                </button>
+            </div>
+
+            <footer>
+                <p>Com amor, Gleiton</p>
+            </footer>
         </div>
     </div>
 
-    <div class="footer">
-        Feito com <span class="heart">❤</span> para Daiane
-    </div>
-
     <script src="script.js"></script>
-
 </body>
 </html>
