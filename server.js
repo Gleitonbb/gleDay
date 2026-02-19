@@ -23,7 +23,7 @@ async function conectarBanco() {
 }
 conectarBanco();
 
-const FOTO_PARA_HOJE = "01"; 
+const FOTO_PARA_HOJE = "./imagem/gleDay.png"; 
 
 // --- ROTAS DO ADMIN ---
 
