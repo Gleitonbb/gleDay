@@ -28,7 +28,7 @@ conectarBanco();
 
 // --- CONFIGURAÇÃO DA FOTO ---
 // Mude este número para trocar a foto que acompanha a história
-const FOTO_PARA_HOJE = "04"; 
+const FOTO_PARA_HOJE = "02"; 
 
 // 1. ROTA DE ESTATÍSTICAS (Admin)
 app.get('/estatisticas', async (req, res) => {
@@ -67,7 +67,7 @@ app.post('/preview-texto', async (req, res) => {
 app.post('/salvar-historia-aprovada', async (req, res) => {
     try {
         const { texto } = req.body;
-        const urlFoto = `https://raw.githubusercontent.com/gleitonbb/gleDay/main/imagem/gleDay${FOTO_PARA_HOJE}.png?v=${Date.now()}`;
+        const urlFoto = `https://raw.githubusercontent.com/gleitonbb/gleDay/main/imagem/gleDay${FOTO_PARA_HOJE}.jpeg?v=${Date.now()}`;
         
         // Limpa a história anterior e salva a nova que a IA criou
         await db.execute('DELETE FROM historias_geradas'); 
