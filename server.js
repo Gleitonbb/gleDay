@@ -28,7 +28,7 @@ conectarBanco();
 
 // --- CONFIGURAÇÃO DA FOTO ---
 // Mude este número para trocar a foto que acompanha a história
-const FOTO_PARA_HOJE = "02"; 
+const FOTO_PARA_HOJE = "03"; 
 
 // 1. ROTA DE ESTATÍSTICAS (Admin)
 app.get('/estatisticas', async (req, res) => {
@@ -45,7 +45,7 @@ app.post('/preview-texto', async (req, res) => {
         const seed = Math.floor(Math.random() * 1000000);
         
         // Prompt reforçado para a IA criar uma história e não apenas repetir o tema
-        const promptTexto = `Escreva uma mensagem romântica e detalhada para minha esposa Daiane. O tema é: ${tema}. Seja criativo, carinhoso e escreva pelo menos 3 parágrafos. Responda apenas com o texto da mensagem.`;
+        const promptTexto = `escreva uma mensagem descontraida para uma garota que estou conhecendo. tema é: ${tema}. Seja criativo 3 parágrafos. Responda apenas com o texto da mensagem, não invente historias sem nexo.`;
         const prompt = encodeURIComponent(promptTexto);
         
         const respIA = await axios.get(`https://text.pollinations.ai/${prompt}?seed=${seed}`, { timeout: 15000 });
@@ -67,7 +67,7 @@ app.post('/preview-texto', async (req, res) => {
 app.post('/salvar-historia-aprovada', async (req, res) => {
     try {
         const { texto } = req.body;
-        const urlFoto = `https://raw.githubusercontent.com/gleitonbb/gleDay/main/imagem/gleDay${FOTO_PARA_HOJE}.jpeg?v=${Date.now()}`;
+        const urlFoto = `https://raw.githubusercontent.com/gleitonbb/gleDay/main/imagem/gleDay${FOTO_PARA_HOJE}.png?v=${Date.now()}`;
         
         // Limpa a história anterior e salva a nova que a IA criou
         await db.execute('DELETE FROM historias_geradas'); 

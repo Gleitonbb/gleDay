@@ -7,19 +7,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="admin.css">
     <style>
-        /* Estilos rápidos para organizar os novos botões */
         .grid-botoes {
             display: flex;
             gap: 10px;
-            margin-top: 10px;
-        }
-        .btn-refazer { background-color: #9c27b0 !important; } /* Roxo */
-        .btn-salvar { background-color: #4CAF50 !important; }  /* Verde */
-        .btn-liberar { 
-            background-color: #ff5722 !important; /* Laranja vibrante */
             margin-top: 15px;
+        }
+        .btn-refazer { background-color: #9c27b0 !important; flex: 1; }
+        .btn-salvar { background-color: #4CAF50 !important; flex: 1; }
+        .btn-liberar { 
+            background-color: #ff5722 !important; 
+            margin-top: 25px;
             font-weight: bold;
             text-transform: uppercase;
+            width: 100%;
         }
         textarea {
             width: 100%;
@@ -28,7 +28,19 @@
             border: 1px solid #ddd;
             font-family: inherit;
             resize: vertical;
+            box-sizing: border-box;
         }
+        /* Estilo da área de Preview da IA */
+        #container-preview {
+            display: none; 
+            margin-top: 20px; 
+            padding: 15px; 
+            background: #fff5f8; 
+            border-left: 5px solid #e91e63; 
+            border-radius: 8px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .stat-box h2 { color: #e91e63; }
     </style>
 </head>
@@ -52,27 +64,29 @@
         </div>
 
         <div class="card">
-            <h3>Próxima Mensagem da IA</h3>
-            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">
-                Defina o tema abaixo. A IA escreverá uma mensagem baseada nisso.
-            </p>
+            <h3>Gerenciador de Histórias</h3>
             
-            <label for="input-tema">Tema ou Contexto do Dia:</label>
-            <textarea id="input-tema" rows="4" placeholder="Ex: Fale sobre como o sorriso dela ilumina meu dia..."></textarea>
+            <label for="input-tema"><strong>1. Tema ou Contexto do Dia:</strong></label>
+            <textarea id="input-tema" rows="2" placeholder="Ex: Fale sobre como o sorriso dela ilumina meu dia..."></textarea>
             
             <div class="grid-botoes">
-                <button onclick="salvarConfig()" class="btn-salvar">💾 Salvar Tema</button>
-                <button onclick="refazerTexto()" class="btn-refazer">🔄 Refazer Texto (IA)</button>
+                <button onclick="refazerTexto()" class="btn-refazer">🔄 Gerar Texto com IA</button>
             </div>
 
-            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+            <div id="container-preview">
+                <label style="color: #e91e63; font-weight: bold;">✨ Sugestão da IA (Você pode editar):</label>
+                <textarea id="output-ia" rows="8" style="margin-top: 10px; border-color: #f8bbd0; background: white;"></textarea>
+                
+                <div class="grid-botoes">
+                    <button id="btn-salvar-final" onclick="salvarConfig()" class="btn-salvar">💾 Salvar e Enviar para o Banco</button>
+                </div>
+            </div>
+
+            <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
 
             <button onclick="liberarNovaHistoria()" class="btn-liberar">
                 🚀 Liberar Surpresa Agora (Quebrar Cronômetro)
             </button>
-            <p style="font-size: 0.75rem; color: #999; margin-top: 8px; text-align: center;">
-                Isso fará com que o botão "Ver nova história" apareça imediatamente para ela.
-            </p>
         </div>
 
         <footer>
