@@ -3,40 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Admin - GleDay</title>
+    <title>Painel de Controle - GleDay ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="admin.css">
+    <style>
+        /* Estilos rápidos para organizar os novos botões */
+        .grid-botoes {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .btn-refazer { background-color: #9c27b0 !important; } /* Roxo */
+        .btn-salvar { background-color: #4CAF50 !important; }  /* Verde */
+        .btn-liberar { 
+            background-color: #ff5722 !important; /* Laranja vibrante */
+            margin-top: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-family: inherit;
+            resize: vertical;
+        }
+        .stat-box h2 { color: #e91e63; }
+    </style>
 </head>
 <body>
-    <div class="admin-container" style="max-width: 600px; margin: auto; padding: 20px; font-family: sans-serif;">
-        <h1>Painel de Controle ❤️</h1>
 
-        <div class="card stats" style="display: flex; gap: 20px; background: #eee; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-            <div>Visualizações Daiane: <strong id="v-daiane">0</strong></div>
-            <div>Admin: <strong id="v-admin">0</strong></div>
-        </div>
+    <div class="admin-container">
+        <header>
+            <h1>GleDay - Gestão de Surpresas ❤️</h1>
+            <p>Controle o que a Daiane vê e acompanhe os acessos.</p>
+        </header>
 
-        <div class="card">
-            <h3>Criar Nova Surpresa</h3>
-            <textarea id="input-tema" rows="4" style="width:100%; margin-bottom:10px;" placeholder="Tema para a IA..."></textarea>
-            
-            <button id="btn-gerar-preview" onclick="gerarPreview()" style="background: #9c27b0; color: white; border: none; padding: 10px; width: 100%; cursor: pointer;">
-                🔄 Gerar Sugestão da IA
-            </button>
-
-            <div id="area-preview" style="display:none; margin-top: 20px; padding: 15px; background: #fff3e0; border: 1px solid #ff9800; border-radius: 8px;">
-                <h4 style="margin-top: 0;">👁️ Prévia do Texto:</h4>
-                <p id="texto-preview" style="font-style: italic; color: #333;"></p>
-                <button onclick="aprovarESalvar()" style="background: #4CAF50; color: white; border: none; padding: 10px; width: 100%; cursor: pointer; font-weight: bold;">
-                    ✅ Gostei! Salvar este texto
-                </button>
+        <div class="card stats">
+            <div class="stat-box">
+                <h3>Visualizações Daiane</h3>
+                <h2 id="v-daiane">0</h2>
+            </div>
+            <div class="stat-box">
+                <h3>Meus Acessos (Admin)</h3>
+                <h2 id="v-admin">0</h2>
             </div>
         </div>
 
-        <hr style="margin: 30px 0;">
+        <div class="card">
+            <h3>Próxima Mensagem da IA</h3>
+            <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">
+                Defina o tema abaixo. A IA escreverá uma mensagem baseada nisso.
+            </p>
+            
+            <label for="input-tema">Tema ou Contexto do Dia:</label>
+            <textarea id="input-tema" rows="4" placeholder="Ex: Fale sobre como o sorriso dela ilumina meu dia..."></textarea>
+            
+            <div class="grid-botoes">
+                <button onclick="salvarConfig()" class="btn-salvar">💾 Salvar Tema</button>
+                <button onclick="refazerTexto()" class="btn-refazer">🔄 Refazer Texto (IA)</button>
+            </div>
 
-        <button onclick="liberarNovaHistoria()" style="background: #ff5722; color: white; border: none; padding: 15px; width: 100%; cursor: pointer; font-weight: bold;">
-            🚀 LIBERAR AGORA PARA DAIANE (Quebrar Cronômetro)
-        </button>
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+
+            <button onclick="liberarNovaHistoria()" class="btn-liberar">
+                🚀 Liberar Surpresa Agora (Quebrar Cronômetro)
+            </button>
+            <p style="font-size: 0.75rem; color: #999; margin-top: 8px; text-align: center;">
+                Isso fará com que o botão "Ver nova história" apareça imediatamente para ela.
+            </p>
+        </div>
+
+        <footer>
+            <p>Painel Administrativo Privado</p>
+        </footer>
     </div>
 
     <script src="admin.js"></script>
