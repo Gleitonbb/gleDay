@@ -51,7 +51,7 @@ app.post('/preview-texto', async (req, res) => {
 app.post('/salvar-historia-aprovada', async (req, res) => {
     try {
         const { texto } = req.body;
-        const urlFoto = `https://raw.githubusercontent.com/gleitonbb/gleDay/main/imagem/gleDay${FOTO_PARA_HOJE}.jpeg`;
+        const urlFoto = `https://raw.githubusercontent.com/gleitonbb/gleDay/main/imagem/gleDay${FOTO_PARA_HOJE}.png`;
         
         // Remove a última para não acumular lixo se estiver apenas editando a de hoje
         await db.execute('DELETE FROM historias_geradas ORDER BY data_criacao DESC LIMIT 1');
