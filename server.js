@@ -23,7 +23,7 @@ async function conectarBanco() {
 }
 conectarBanco();
 
-const FOTO_PARA_HOJE = "01"; 
+const FOTO_PARA_HOJE = "./imagem/gleDay04.jpeg"; 
 
 // --- ROTAS ADMIN ---
 app.post('/registrar-acesso', async (req, res) => {
