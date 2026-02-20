@@ -138,3 +138,38 @@ footer {
 #texto-da-historia {
     animation: fadeIn 0.8s ease forwards;
 }
+
+/* Botão Galeria Responsivo */
+.bot_galer {
+    background-color: #f8f8f8;
+    color: #d81b60;
+    padding: 15px 20px; /* Mesma altura do botão principal */
+    margin: 15px 0 0 0; /* Espaço apenas no topo para separar do botão acima */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 50px; /* Mudado para 50px para ficar igual ao botão de cima */
+    border: #d81b60 2px solid;
+    width: 100%; /* Garante que ocupe a largura total no celular */
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Efeito ao tocar/passar o mouse */
+.bot_galer:active {
+    transform: scale(0.98);
+    background-color: #fce4ec;
+}
+
+/* Ajuste fino para telas muito pequenas */
+@media (max-width: 360px) {
+    .bot_galer {
+        font-size: 0.9rem;
+        padding: 12px;
+    }
+}
