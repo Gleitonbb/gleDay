@@ -139,37 +139,43 @@ footer {
     animation: fadeIn 0.8s ease forwards;
 }
 
-/* Botão Galeria Responsivo */
+/* Ajuste no container de botões para mobile */
+.acoes {
+    display: flex;
+    flex-direction: column; /* Botões um embaixo do outro no celular */
+    gap: 12px;
+    width: 100%;
+}
+
 .bot_galer {
-    background-color: #f8f8f8;
+    background-color: #fff; /* Fundo branco para destacar o texto rosa */
     color: #d81b60;
-    padding: 15px 20px; /* Mesma altura do botão principal */
-    margin: 15px 0 0 0; /* Espaço apenas no topo para separar do botão acima */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    border-radius: 50px; /* Mudado para 50px para ficar igual ao botão de cima */
-    border: #d81b60 2px solid;
-    width: 100%; /* Garante que ocupe a largura total no celular */
-    font-weight: bold;
+    padding: 15px 20px; /* Mais alto para facilitar o toque no celular */
+    margin: 5px 0; /* Espaçamento vertical */
+    border-radius: 50px; /* Arredondado igual ao botão principal */
+    border: 2px solid #d81b60;
     font-size: 1rem;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
     cursor: pointer;
+    width: 100%; /* Ocupa a largura total no mobile */
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     transition: all 0.3s ease;
-    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Sombra mais suave e moderna */
+    text-decoration: none; /* Caso você use como link <a> */
 }
 
-/* Efeito ao tocar/passar o mouse */
+/* Efeito ao tocar/clicar */
 .bot_galer:active {
-    transform: scale(0.98);
-    background-color: #fce4ec;
+    transform: scale(0.96);
+    background-color: #fce4ec; /* Fica levemente rosinha ao clicar */
 }
 
-/* Ajuste fino para telas muito pequenas */
-@media (max-width: 360px) {
-    .bot_galer {
-        font-size: 0.9rem;
-        padding: 12px;
-    }
+/* Se quiser adicionar um ícone ou emoji antes do texto */
+.bot_galer::before {
+    content: "📸"; 
+    font-size: 1.1rem;
 }
