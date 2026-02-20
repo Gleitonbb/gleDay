@@ -155,7 +155,7 @@ async function conectarBanco() {
 conectarBanco();
 
 // --- CONFIGURAÇÃO DA FOTO ---
-const FOTO_PARA_HOJE = "05"; 
+const FOTO_PARA_HOJE = "06"; 
 
 // 1. ROTA DE ESTATÍSTICAS (Admin)
 app.get('/estatisticas', async (req, res) => {
