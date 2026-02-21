@@ -155,7 +155,7 @@ async function conectarBanco() {
 conectarBanco();
 
 // --- CONFIGURAÇÃO DA FOTO ---
-const FOTO_PARA_HOJE = "06"; 
+const FOTO_PARA_HOJE = "07"; 
 
 // 1. ROTA DE ESTATÍSTICAS (Admin)
 app.get('/estatisticas', async (req, res) => {
@@ -170,7 +170,7 @@ app.post('/preview-texto', async (req, res) => {
     try {
         const { tema } = req.body;
         const seed = Math.floor(Math.random() * 1000000);
-        const promptTexto = `escreva uma mensagem descontraida para uma garota que estou conhecendo. tema é: ${tema}. Seja criativo 3 parágrafos. Responda apenas com o texto da mensagem.`;
+        const promptTexto = `escreva uma mensagem descontraida para uma garota que estou conhecendo. tema é: ${tema}. Seja criativo 3 parágrafos. Responda apenas com o texto da mensagem. não quero historias de corte de cabelo`;
         const prompt = encodeURIComponent(promptTexto);
         
         const respIA = await axios.get(`https://text.pollinations.ai/${prompt}?seed=${seed}`, { timeout: 15000 });

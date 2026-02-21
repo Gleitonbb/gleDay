@@ -1,3 +1,5 @@
+//TRUNCATE TABLE acessos;
+
 const API = "https://lingually-categorical-latisha.ngrok-free.dev/";
 
 // Cabeçalhos padrão para todas as requisições
