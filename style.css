@@ -11,14 +11,15 @@ body {
     overflow-x: hidden; 
 }
 
-/* --- IMAGENS LATERAIS --- */
+/* --- IMAGENS LATERAIS NO TOPO --- */
 .decoracao {
     position: fixed;
-    bottom: 20px;
-    height: 450px; 
-    z-index: 1; /* Garante visibilidade */
+    top: 0;          /* Alinhado ao topo */
+    height: 450px;   /* Altura para computador */
+    z-index: 1;      
     pointer-events: none; 
     transition: all 0.5s ease;
+    padding-bottom: 20px; /* O espaço bottom que você pediu dentro da imagem */
 }
 
 .rapaz { left: 2%; }
@@ -27,8 +28,9 @@ body {
 /* --- CONTAINER E CARD --- */
 .container { 
     width: 100%; 
-    max-width: 380px; /* Reduzido para sobrar espaço lateral */
+    max-width: 380px; 
     z-index: 10; 
+    position: relative;
 }
 
 .card-romantico {
@@ -37,6 +39,7 @@ body {
     padding: 25px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.1);
     text-align: center;
+    backdrop-filter: blur(5px); /* Efeito de vidro para ver as fotos atrás */
 }
 
 .titulo-principal {
@@ -116,8 +119,14 @@ body {
 
 /* --- RESPONSIVIDADE CELULAR --- */
 @media (max-width: 600px) {
-    .container { max-width: 270px; } /* Card bem estreito para liberar as fotos */
-    .decoracao { height: 260px; }
+    .container { 
+        max-width: 270px; 
+        margin-top: 50px; /* Empurra o card para baixo para não cobrir o topo das fotos */
+    } 
+    .decoracao { 
+        height: 280px; 
+        top: 0;
+    }
     .rapaz { left: -15px; }
     .mulher { right: -15px; }
     .titulo-principal { font-size: 1.6rem; }
