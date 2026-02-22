@@ -120,7 +120,7 @@ body {
 @media (max-width: 800px) {
     /* Diminuindo o card para sobrar espaço nas laterais */
     .container {
-        max-width: 85%; /* O card agora ocupa apenas 85% da largura da tela */
+        max-width: 75%; /* O card agora ocupa apenas 85% da largura da tela */
     }
 
     .card-romantico {
