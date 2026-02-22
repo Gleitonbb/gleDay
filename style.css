@@ -1,39 +1,38 @@
-/* Reset básico e Fontes */
+/* Reset e Base */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    background: linear-gradient(135deg, #ffffff, #ffffff);
-    font-family: 'Poppins', 'Segoe UI', sans-serif; 
+    background: #ffffff; /* Fundo limpo para destacar as fotos */
+    font-family: 'Poppins', sans-serif; 
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    padding: 20px;
     overflow-x: hidden; 
 }
 
 /* --- IMAGENS LATERAIS --- */
 .decoracao {
     position: fixed;
-    bottom: 0;
+    bottom: 20px;
     height: 450px; 
-    z-index: -1;   
+    z-index: 1; /* Garante visibilidade */
     pointer-events: none; 
     transition: all 0.5s ease;
 }
 
-.rapaz { left: 5%; }
-.mulher { right: 5%; }
+.rapaz { left: 2%; }
+.mulher { right: 2%; }
 
 /* --- CONTAINER E CARD --- */
 .container { 
     width: 100%; 
-    max-width: 420px; /* Reduzi levemente no desktop também para elegância */
+    max-width: 380px; /* Reduzido para sobrar espaço lateral */
     z-index: 10; 
 }
 
 .card-romantico {
-    background: rgb(200, 240, 244);
+    background: rgba(200, 240, 244, 0.95);
     border-radius: 25px;
     padding: 25px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.1);
@@ -44,10 +43,9 @@ body {
     color: #0b89c3;
     font-family: 'Dancing Script', cursive;
     font-size: 2.2rem;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
 }
 
-/* Moldura da Foto */
 .moldura-foto {
     width: 100%;
     aspect-ratio: 1 / 1;
@@ -59,93 +57,68 @@ body {
     align-items: center;
     border: 4px solid #6dd7f2;
     position: relative;
-    margin-bottom: 20px;
+    cursor: pointer;
 }
 
-#imagem-da-historia {
+#imagem-da-historia { width: 100%; height: 100%; object-fit: cover; }
+
+.hint-zoom {
+    position: absolute;
+    bottom: 0;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Conteúdo de Texto */
-.conteudo-texto {
-    margin: 20px 0;
-    min-height: 100px;
-}
-
-#texto-da-historia {
-    color: #4a4a4a;
-    line-height: 1.6;
-    font-size: 1.05rem;
-    font-style: italic;
+    background: rgba(11, 137, 195, 0.7);
+    color: white;
+    font-size: 0.7rem;
+    padding: 5px;
 }
 
 /* --- BOTÕES --- */
-.acoes {
-    display: flex;
-    flex-direction: column; 
-    gap: 12px;
-    width: 100%;
-}
+.acoes { display: flex; flex-direction: column; gap: 12px; }
 
 #btn-gerar {
     background: #0b89c3;
     color: white;
     border: none;
-    padding: 15px 20px;
+    padding: 15px;
     border-radius: 50px;
     font-weight: bold;
     cursor: pointer;
-    width: 100%;
     box-shadow: 0 4px 15px rgba(11, 137, 195, 0.3);
 }
 
 .bot_galer {
-    background-color: #fff;
+    background: #fff;
     color: #0b89c3;
-    padding: 15px 20px;
-    border-radius: 50px;
     border: 2px solid #0b89c3;
+    padding: 15px;
+    border-radius: 50px;
     font-weight: bold;
-    cursor: pointer;
-    width: 100%;
     text-decoration: none;
     display: flex;
     justify-content: center;
-    align-items: center;
 }
 
-/* --- RESPONSIVIDADE CELULAR (AQUI ESTÁ A MUDANÇA) --- */
-@media (max-width: 800px) {
-    /* Diminuindo o card para sobrar espaço nas laterais */
-    .container {
-        max-width: 75%; /* O card agora ocupa apenas 85% da largura da tela */
-    }
+/* --- MODAL DE ZOOM --- */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.95);
+    z-index: 2000;
+    padding: 20px;
+    overflow-y: auto;
+}
 
-    .card-romantico {
-        padding: 15px; /* Diminuí o respiro interno do card para ganhar espaço */
-    }
+.modal-conteudo { margin: auto; max-width: 500px; padding-top: 40px; }
+#img-zoom { width: 100%; border-radius: 15px; }
+#texto-zoom { color: white; margin-top: 20px; font-size: 1.2rem; line-height: 1.6; font-style: italic; }
+.fechar-btn { color: white; position: absolute; top: 20px; right: 20px; font-weight: bold; cursor: pointer; }
 
-    .decoracao {
-        height: 250px; /* Aumentei um pouco a altura delas no mobile para aparecerem mais */
-        opacity: 1;    /* Tirei a transparência para ficarem vivas */
-    }
-
-    /* Posicionando as imagens para "abraçarem" o card menor */
-    .rapaz { left: -10px; } 
-    .mulher { right: -10px; }
-    
-    body {
-        padding: 10px;
-        align-items: center; /* Voltei para o centro para alinhar com as fotos no meio */
-    }
-
-    .titulo-principal {
-        font-size: 1.8rem;
-    }
-
-    #texto-da-historia {
-        font-size: 0.95rem; /* Texto levemente menor para caber no card estreito */
-    }
+/* --- RESPONSIVIDADE CELULAR --- */
+@media (max-width: 600px) {
+    .container { max-width: 270px; } /* Card bem estreito para liberar as fotos */
+    .decoracao { height: 260px; }
+    .rapaz { left: -15px; }
+    .mulher { right: -15px; }
+    .titulo-principal { font-size: 1.6rem; }
 }

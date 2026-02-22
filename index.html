@@ -16,9 +16,10 @@
         <div class="card-romantico">
             <h1 class="titulo-principal">Para Daiane</h1>
             
-            <div class="moldura-foto">
+            <div class="moldura-foto" onclick="abrirZoom()">
                 <img id="imagem-da-historia" src="" alt="Foto" style="display:none;">
                 <div id="placeholder-vazio">❤️</div>
+                <div class="hint-zoom">Toque para ampliar 🔍</div>
             </div>
 
             <div class="conteudo-texto">
@@ -34,6 +35,14 @@
                     🖼️ Ir para Galeria
                 </button>
             </div>
+        </div>
+    </div>
+
+    <div id="modal-zoom" class="modal" onclick="fecharZoom()">
+        <span class="fechar-btn">✕ Voltar</span>
+        <div class="modal-conteudo">
+            <img id="img-zoom" src="">
+            <div id="texto-zoom"></div>
         </div>
     </div>
 
