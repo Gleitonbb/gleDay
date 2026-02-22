@@ -32,7 +32,7 @@ body {
 }
 
 .card-romantico {
-    background: rgba(200, 240, 244, 0.95);
+    background: rgba(200, 240, 244, 0.655);
     border-radius: 25px;
     padding: 25px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.1);
