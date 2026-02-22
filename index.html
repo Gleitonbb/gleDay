@@ -5,36 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nosso Momento Mágico ❤️</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+
+    <img src="imagem/imagem01.jpeg" class="decoracao rapaz" alt="Rapaz">
+    <img src="imagem/imagem02.jpeg" class="decoracao mulher" alt="Mulher">
+
     <div class="container">
-
-        <div class="acoes">
-    <button id="btn-gerar">
-        <span id="btn-texto">Historia de Hoje</span>
-    </button>
-    
-    <button id="btn-galeria" class="bot_galer" onclick="window.location.href='historias.html'">
-        Ir para Galeria
-    </button>
-</div>
-
         <div class="card-romantico">
-            <h1 class="titulo-principal">Para Dayane</h1>
+            <h1 class="titulo-principal">Para Daiane</h1>
+            
             <div class="moldura-foto">
-                <img id="imagem-da-historia" src="" alt="Foto" style="display:none; width:100%; border-radius:15px;">
+                <img id="imagem-da-historia" src="" alt="Foto" style="display:none;">
                 <div id="placeholder-vazio">❤️</div>
             </div>
+
             <div class="conteudo-texto">
                 <p id="texto-da-historia">Toque abaixo para revelar...</p>
             </div>
+
             <div class="acoes">
                 <button id="btn-gerar" onclick="verificarOuGerar()">
-                    <span id="btn-texto">Novas historias em Breve</span>
+                    <span id="btn-texto">Ver surpresa de hoje</span>
+                </button>
+                
+                <button class="bot_galer" onclick="window.location.href='historias.html'">
+                    🖼️ Ir para Galeria
                 </button>
             </div>
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>

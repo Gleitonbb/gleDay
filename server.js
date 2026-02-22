@@ -163,7 +163,7 @@ async function conectarBanco() {
 }
 conectarBanco();
 
-const FOTO_PARA_HOJE = "08"; 
+const FOTO_PARA_HOJE = "09"; 
 
 // 1. ESTATÍSTICAS COM HORÁRIOS
 app.get('/estatisticas', async (req, res) => {

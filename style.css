@@ -1,17 +1,43 @@
-/* Reset básico para mobile */
+/* Reset básico para mobile e desktop */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    background: linear-gradient(135deg, #fce4ec, #f8bbd0);
-    font-family: 'Poppins', 'Segoe UI', sans-serif; /* Usei a Poppins que está no seu HTML */
+    /* Seu degradê azul atualizado */
+    background: linear-gradient(135deg, #ffffff, #fdfdfd);
+    font-family: 'Poppins', 'Segoe UI', sans-serif; 
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     padding: 20px;
+    overflow-x: hidden; /* Evita barra de rolagem por causa das fotos laterais */
 }
 
-.container { width: 100%; max-width: 450px; }
+/* --- IMAGENS LATERAIS NO ALTO --- */
+.decoracao {
+    position: fixed;
+    top: 20px;       /* Alinhadas ao topo conforme solicitado */
+    height: 380px;   /* Tamanho para computador */
+    z-index: -1;     /* Fica atrás do card */
+    pointer-events: none; /* Não atrapalha os cliques no site */
+    transition: all 0.5s ease;
+}
+
+.rapaz { 
+    left: 2%; 
+}
+
+.mulher { 
+    right: 2%; 
+}
+
+/* --- CONTAINER E CARD --- */
+.container { 
+    width: 100%; 
+    max-width: 450px; 
+    z-index: 10; 
+    position: relative;
+}
 
 .card-romantico {
     background: white;
@@ -22,7 +48,7 @@ body {
 }
 
 .titulo-principal {
-    color: #d81b60;
+    color: #0b89c3;
     font-family: 'Dancing Script', cursive;
     font-size: 2.2rem;
     margin-bottom: 5px;
@@ -34,7 +60,7 @@ body {
     margin-bottom: 20px;
 }
 
-/* Moldura da Foto */
+/* Moldura da Foto Principal */
 .moldura-foto {
     width: 100%;
     aspect-ratio: 1 / 1;
@@ -53,14 +79,14 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: none; /* Começa escondida até o JS carregar a imagem */
+    display: none; 
     z-index: 2;
 }
 
 #placeholder-vazio {
     position: absolute;
     font-size: 3rem;
-    color: #f8bbd0;
+    color: #f1b5ca;
     z-index: 1;
 }
 
@@ -78,9 +104,16 @@ body {
     transition: opacity 0.3s;
 }
 
-/* Botão com Cronômetro */
+/* --- BOTÕES (AÇÕES) --- */
+.acoes {
+    display: flex;
+    flex-direction: column; 
+    gap: 12px;
+    width: 100%;
+}
+
 #btn-gerar {
-    background: #e91e63;
+    background: #0b89c3;
     color: white;
     border: none;
     padding: 15px 20px;
@@ -94,41 +127,38 @@ body {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+    box-shadow: 0 4px 15px rgba(11, 137, 195, 0.3);
 }
 
-#btn-gerar:active { transform: scale(0.98); }
+.bot_galer {
+    background-color: #fff; 
+    color: #0b89c3;
+    padding: 15px 20px;
+    border-radius: 50px;
+    border: 2px solid #0b89c3;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+#btn-gerar:active, .bot_galer:active { 
+    transform: scale(0.96); 
+}
 
 #btn-gerar:disabled {
     background: #ccc;
-    color: #666;
     cursor: not-allowed;
-    box-shadow: none;
 }
 
-/* Círculo de Loading */
-#loading-circle {
-    width: 18px;
-    height: 18px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: #fff;
-    animation: girar 1s linear infinite;
-    display: none; /* JS controla a exibição */
-}
-
-@keyframes girar {
-    to { transform: rotate(360deg); }
-}
-
-/* Rodapé */
-footer {
-    margin-top: 20px;
-    font-size: 0.8rem;
-    color: #aaa;
-}
-
-/* Animação de entrada suave */
+/* --- ANIMAÇÕES E EFEITOS --- */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -139,43 +169,23 @@ footer {
     animation: fadeIn 0.8s ease forwards;
 }
 
-/* Ajuste no container de botões para mobile */
-.acoes {
-    display: flex;
-    flex-direction: column; /* Botões um embaixo do outro no celular */
-    gap: 12px;
-    width: 100%;
-}
+/* --- RESPONSIVIDADE (CELULAR) --- */
+@media (max-width: 800px) {
+    .decoracao {
+        height: 160px; /* Bem menores no topo do celular */
+        top: 10px;
+        opacity: 0.7;
+    }
+    
+    .rapaz { left: -15px; }
+    .mulher { right: -15px; }
 
-.bot_galer {
-    background-color: #fff; /* Fundo branco para destacar o texto rosa */
-    color: #d81b60;
-    padding: 15px 20px; /* Mais alto para facilitar o toque no celular */
-    margin: 5px 0; /* Espaçamento vertical */
-    border-radius: 50px; /* Arredondado igual ao botão principal */
-    border: 2px solid #d81b60;
-    font-size: 1rem;
-    font-weight: bold;
-    font-family: 'Poppins', sans-serif;
-    cursor: pointer;
-    width: 100%; /* Ocupa a largura total no mobile */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Sombra mais suave e moderna */
-    text-decoration: none; /* Caso você use como link <a> */
-}
+    /* Dá um espaço no topo do card para não cobrir as fotos no mobile */
+    .container {
+        margin-top: 60px; 
+    }
 
-/* Efeito ao tocar/clicar */
-.bot_galer:active {
-    transform: scale(0.96);
-    background-color: #fce4ec; /* Fica levemente rosinha ao clicar */
-}
-
-/* Se quiser adicionar um ícone ou emoji antes do texto */
-.bot_galer::before {
-    content: "📸"; 
-    font-size: 1.1rem;
+    .titulo-principal {
+        font-size: 1.8rem;
+    }
 }
