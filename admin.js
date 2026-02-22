@@ -1,126 +1,125 @@
 //TRUNCATE TABLE acessos;
+// CONFIGURAÇÃO DA URL DO SERVIDOR (NGROK)
+const API_URL = "https://lingually-categorical-latisha.ngrok-free.dev/";
 
-const API = "https://lingually-categorical-latisha.ngrok-free.dev/";
+// 1. ATUALIZAR ESTATÍSTICAS E HORÁRIOS
+async function atualizarEstatisticas() {
+    try {
+        const resp = await fetch(`${API_URL}estatisticas`, {
+            headers: { 'ngrok-skip-browser-warning': 'true' }
+        });
+        const data = await resp.json();
 
-// Cabeçalhos padrão para todas as requisições
-const HEADERS_PADRAO = {
-    'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true'
-};
+        // Atualiza os contadores no topo
+        if (data.estatisticas) {
+            data.estatisticas.forEach(stat => {
+                if (stat.quem === 'daiane') document.getElementById('v-daiane').innerText = stat.total;
+                if (stat.quem === 'admin') document.getElementById('v-admin').innerText = stat.total;
+            });
+        }
 
-/**
- * 1. GERAR TEXTO COM IA
- */
-async function refazerTexto() {
-    const temaInput = document.getElementById('input-tema');
-    const outputIA = document.getElementById('output-ia');
-    const containerPreview = document.getElementById('container-preview');
-    
-    const tema = temaInput.value;
-    const btn = event.target; 
-    
-    if (!tema) {
-        alert("⚠️ Digite um tema primeiro!");
-        return;
+        // Atualiza a lista de horários detalhados
+        const listaUI = document.getElementById('lista-horarios');
+        listaUI.innerHTML = ''; 
+
+        if (!data.recentes || data.recentes.length === 0) {
+            listaUI.innerHTML = '<li>Nenhum acesso registrado.</li>';
+        } else {
+            data.recentes.forEach(acesso => {
+                // Formata a data para: 21/02/2026 17:30
+                const dataObj = new Date(acesso.data_acesso);
+                const dataFormatada = dataObj.toLocaleString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const li = document.createElement('li');
+                li.innerHTML = `<span>✅ Visualização</span> <strong>${dataFormatada}</strong>`;
+                listaUI.appendChild(li);
+            });
+        }
+    } catch (e) {
+        console.error("Erro ao carregar estatísticas:", e);
     }
+}
 
-    btn.innerText = "IA pensando... ⏳";
+// 2. GERAR TEXTO COM IA (PREVIEW)
+async function refazerTexto() {
+    const tema = document.getElementById('input-tema').value;
+    if (!tema) return alert("Digite um tema primeiro!");
+
+    const btn = document.querySelector('.btn-refazer');
+    btn.innerText = "🤖 Pensando...";
     btn.disabled = true;
 
     try {
-        const resp = await fetch(API + 'preview-texto', {
+        const resp = await fetch(`${API_URL}preview-texto`, {
             method: 'POST',
-            headers: HEADERS_PADRAO,
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ tema })
         });
-        
         const data = await resp.json();
-        
-        if(data.sucesso) {
-            outputIA.value = data.texto; 
-            containerPreview.style.display = "block"; // Mostra a div de resultado
-            containerPreview.scrollIntoView({ behavior: 'smooth' });
-        } else {
-            alert("❌ Erro da IA: " + (data.erro || "Tente outro tema."));
+
+        if (data.sucesso) {
+            document.getElementById('output-ia').value = data.texto;
+            document.getElementById('container-preview').style.display = 'block';
         }
-    } catch (e) { 
-        console.error(e);
-        alert("Erro ao conectar com o servidor. Verifique o terminal."); 
+    } catch (e) {
+        alert("Erro ao chamar a IA.");
     } finally {
         btn.innerText = "🔄 Gerar Texto com IA";
         btn.disabled = false;
     }
 }
 
-/**
- * 2. SALVAR NO BANCO DE DADOS
- */
+// 3. SALVAR NO BANCO (ARQUIVA A ANTIGA AUTOMATICAMENTE NO SERVER)
 async function salvarConfig() {
     const textoFinal = document.getElementById('output-ia').value;
+    const btn = document.getElementById('btn-salvar-final');
 
-    if (!textoFinal || textoFinal.length < 5) {
-        alert("⚠️ O texto gerado está vazio!");
-        return;
-    }
+    if (!textoFinal) return alert("O texto está vazio!");
+
+    btn.innerText = "💾 Salvando...";
+    btn.disabled = true;
 
     try {
-        const resp = await fetch(API + 'salvar-historia-aprovada', {
+        const resp = await fetch(`${API_URL}salvar-historia-aprovada`, {
             method: 'POST',
-            headers: HEADERS_PADRAO,
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ texto: textoFinal })
         });
-        
         const data = await resp.json();
-        if(data.sucesso) {
-            alert("✅ Sucesso! História salva para a Daiane.");
-            document.getElementById('container-preview').style.display = "none";
+
+        if (data.sucesso) {
+            alert("História salva! A anterior foi movida para a Galeria.");
+            location.reload(); // Recarrega para limpar os campos
         }
-    } catch (e) { 
-        alert("Erro ao salvar: " + e.message); 
-    }
-}
-
-/**
- * 3. LIBERAR SURPRESA AGORA
- */
-async function liberarNovaHistoria() {
-    if(!confirm("Deseja liberar a visualização agora?")) return;
-
-    try {
-        const resp = await fetch(API + 'forcar-liberacao', {
-            method: 'POST',
-            headers: HEADERS_PADRAO
-        });
-        const data = await resp.json();
-        if(data.sucesso) alert("🚀 Botão liberado para ela!");
     } catch (e) {
-        alert("Erro: " + e.message);
+        alert("Erro ao salvar no banco.");
+    } finally {
+        btn.innerText = "💾 Salvar e Enviar para o Banco";
+        btn.disabled = false;
     }
 }
 
-/**
- * 4. CARREGAR ESTATÍSTICAS
- */
-async function carregarEstatisticas() {
+// 4. LIBERAR SURPRESA (FORÇAR)
+async function liberarNovaHistoria() {
+    if(!confirm("Deseja mesmo quebrar o cronômetro da Daiane?")) return;
+    
     try {
-        const resp = await fetch(API + 'estatisticas', {
-            headers: HEADERS_PADRAO
-        });
-        
-        if (!resp.ok) throw new Error("Falha no fetch");
-        
-        const data = await resp.json();
-        
-        document.getElementById('v-daiane').innerText = "0";
-        document.getElementById('v-admin').innerText = "0";
-
-        data.estatisticas.forEach(stat => {
-            if(stat.quem === 'daiane') document.getElementById('v-daiane').innerText = stat.total;
-            if(stat.quem === 'admin') document.getElementById('v-admin').innerText = stat.total;
-        });
-    } catch (e) { 
-        console.error("Erro nas estatísticas:", e); 
+        await fetch(`${API_URL}forcar-liberacao`, { method: 'POST' });
+        alert("Liberado! Ela poderá ver a história agora.");
+    } catch (e) {
+        alert("Erro ao liberar.");
     }
 }
 
-window.onload = carregarEstatisticas;
+// INICIALIZAÇÃO
+document.addEventListener('DOMContentLoaded', () => {
+    atualizarEstatisticas();
+    // Atualiza o monitoramento a cada 30 segundos sozinho
+    setInterval(atualizarEstatisticas, 30000);
+});
