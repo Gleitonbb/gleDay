@@ -174,7 +174,7 @@ async function conectarBanco() {
 }
 conectarBanco();
 
-const FOTO_PARA_HOJE = "09"; 
+const FOTO_PARA_HOJE = "10"; 
 
 // 1. ESTATÍSTICAS (Adicionado cabeçalho anti-cache)
 app.get('/estatisticas', async (req, res) => {
@@ -203,7 +203,7 @@ app.post('/preview-texto', async (req, res) => {
 app.post('/salvar-historia-aprovada', async (req, res) => {
     try {
         const { texto } = req.body;
-        const urlFoto = `https://raw.githubusercontent.com/gleitonbb/gleDay/main/imagem/gleDay${FOTO_PARA_HOJE}.png?v=${Date.now()}`;
+        const urlFoto = `https://raw.githubusercontent.com/gleitonbb/gleDay/main/imagem/gleDay${FOTO_PARA_HOJE}.jpeg?v=${Date.now()}`;
         
         const [ativas] = await db.execute('SELECT * FROM historias_geradas LIMIT 1');
         if (ativas.length > 0) {
