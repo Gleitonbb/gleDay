@@ -6,20 +6,41 @@ window.addEventListener('load', () => {
     verificarOuGerar();
 });
 
+// --- NOVA FUNÇÃO DE ZOOM (Faltava aqui) ---
+function abrirZoom() {
+    const imgOriginal = document.getElementById('imagem-da-historia');
+    // Se a imagem ainda não carregou ou está escondida, não faz nada
+    if (!imgOriginal || imgOriginal.style.display === 'none') return;
+
+    const modal = document.getElementById('modal-zoom');
+    const textoOriginal = document.getElementById('texto-da-historia');
+    const imgZoom = document.getElementById('img-zoom');
+    const textoZoom = document.getElementById('texto-zoom');
+    
+    // Copia a imagem e o texto para dentro do modal
+    imgZoom.src = imgOriginal.src;
+    textoZoom.innerText = textoOriginal.innerText;
+    
+    // Mostra o modal
+    modal.style.display = "block";
+    document.body.style.overflow = "hidden"; // Trava o scroll do fundo
+}
+
+function fecharZoom() {
+    document.getElementById('modal-zoom').style.display = "none";
+    document.body.style.overflow = "auto"; // Libera o scroll
+}
+
 async function verificarOuGerar() {
     const areaTexto = document.getElementById('texto-da-historia');
     const areaImagem = document.getElementById('imagem-da-historia');
     const placeholder = document.getElementById('placeholder-vazio');
-    const btnTexto = document.getElementById('btn-texto');
 
     // --- LÓGICA DE IDENTIFICAÇÃO DE ACESSO ---
-    // Se o hostname contiver github.io, sabemos que é o acesso oficial
     const isOficial = window.location.hostname.includes('github.io');
     const quemAcessou = isOficial ? 'daiane' : 'gleiton';
 
     try {
-        console.log(`Tentando registrar acesso para: ${quemAcessou}`);
-        
         // Registro de acesso enviado ao seu servidor
         fetch(`${API_URL}/registrar-acesso`, {
             method: 'POST',
@@ -28,20 +49,13 @@ async function verificarOuGerar() {
                 'ngrok-skip-browser-warning': 'true' 
             },
             body: JSON.stringify({ tipo: quemAcessou })
-        })
-        .then(res => {
-            if (res.ok) console.log("✅ Sucesso ao registrar no banco!");
-            else console.log("⚠️ Erro no servidor ao registrar.");
-        })
-        .catch(err => console.error("❌ O servidor está offline ou a URL do Ngrok mudou."));
-
+        });
     } catch (e) {
-        console.error("❌ Erro na função de registro:", e);
+        console.error("Erro no registro:", e);
     }
 
-    // --- BUSCA O CONTEÚDO (HISTÓRIA E IMAGEM) ---
+    // --- BUSCA O CONTEÚDO ---
     try {
-        // Usamos POST conforme definido no seu server.js
         const response = await fetch(`${API_URL}/gerar-momento`, {
             method: 'POST',
             headers: { 
@@ -56,7 +70,7 @@ async function verificarOuGerar() {
             if (areaTexto) areaTexto.innerText = data.texto;
             
             if (areaImagem) {
-                // Adicionamos um timestamp na imagem para evitar cache do navegador
+                // Adicionamos timestamp para evitar cache
                 areaImagem.src = `${data.imagem}&t=${Date.now()}`;
                 areaImagem.style.display = 'block';
             }
@@ -70,23 +84,19 @@ async function verificarOuGerar() {
             if (areaTexto) areaTexto.innerText = "Ainda não temos uma nova história hoje... Volte logo! ❤️";
         }
     } catch (e) { 
-        console.error("❌ Erro ao buscar momento:", e);
-        if (areaTexto) areaTexto.innerText = "Houve um probleminha técnico, mas o amor continua o mesmo! ❤️";
+        console.error("Erro ao buscar momento:", e);
     }
 }
 
 function iniciarCronometro(ms) {
     const btnTexto = document.getElementById('btn-texto');
     if (!btnTexto) return;
-
     let tempo = ms;
     clearInterval(intervaloCronometro);
-
     if (tempo <= 0) {
         btnTexto.innerText = "✨ Ver nova história";
         return;
     }
-
     intervaloCronometro = setInterval(() => {
         tempo -= 1000;
         if (tempo <= 0) {
@@ -96,7 +106,7 @@ function iniciarCronometro(ms) {
             const h = Math.floor(tempo / 3600000);
             const m = Math.floor((tempo % 3600000) / 60000);
             const s = Math.floor((tempo % 60000) / 1000);
-            btnTexto.innerText = `Próxima surpresa em: ${h}h ${m}m ${s}s`;
+            btnTexto.innerText = `Próxima em: ${h}h ${m}m ${s}s`;
         }
     }, 1000);
 }
