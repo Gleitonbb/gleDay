@@ -1,0 +1,1 @@
+DELETE FROM historias_arquivo WHERE id IN (4, 5);

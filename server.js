@@ -137,15 +137,22 @@ app.listen(3000, () => {
     console.log("========================================");
 });
 */
-
 const express = require('express');
 const axios = require('axios');
 const mysql = require('mysql2/promise');
 const cors = require('cors');
 
 const app = express();
+
+// --- CONFIGURAÇÃO DE CORS ROBUSTA ---
+// Isso garante que o GitHub Pages consiga enviar dados para o seu Ngrok
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'ngrok-skip-browser-warning']
+}));
+
 app.use(express.json());
-app.use(cors());
 
 const dbConfig = {
     host: 'localhost',
@@ -158,19 +165,24 @@ let db;
 async function conectarBanco() {
     try {
         db = await mysql.createPool(dbConfig);
-        console.log("✅ Banco MySQL Conectado!");
-    } catch (err) { console.error("❌ Erro no Banco:", err); }
+        // Teste de conexão simples
+        await db.query('SELECT 1');
+        console.log("✅ Banco MySQL Conectado e Pronto!");
+    } catch (err) { 
+        console.error("❌ Erro no Banco:", err); 
+    }
 }
 conectarBanco();
 
 const FOTO_PARA_HOJE = "09"; 
 
-// 1. ESTATÍSTICAS COM HORÁRIOS
+// 1. ESTATÍSTICAS (Adicionado cabeçalho anti-cache)
 app.get('/estatisticas', async (req, res) => {
     try {
+        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
         const [totais] = await db.execute('SELECT quem, COUNT(*) as total FROM acessos GROUP BY quem');
         const [recentes] = await db.execute(
-            'SELECT data_acesso FROM acessos WHERE quem = "daiane" ORDER BY data_acesso DESC LIMIT 10'
+            'SELECT data_acesso FROM acessos WHERE LOWER(quem) = "daiane" ORDER BY data_acesso DESC LIMIT 10'
         );
         res.json({ estatisticas: totais, recentes: recentes });
     } catch (e) { res.status(500).json({ erro: e.message }); }
@@ -205,26 +217,40 @@ app.post('/salvar-historia-aprovada', async (req, res) => {
     } catch (e) { res.status(500).json({ erro: e.message }); }
 });
 
-// 4. REGISTRAR ACESSO (Onde o horário é salvo)
+// 4. REGISTRAR ACESSO (Com Log para Debug)
 app.post('/registrar-acesso', async (req, res) => {
     try {
         const { tipo } = req.body;
+        if (!tipo) return res.status(400).json({ erro: "Tipo não informado" });
+
         await db.execute('INSERT INTO acessos (quem) VALUES (?)', [tipo]);
+        
+        // Isso vai aparecer no seu terminal do VS Code/Node
+        console.log(`📡 NOVO ACESSO REGISTRADO -> Quem: ${tipo} | Hora: ${new Date().toLocaleTimeString()}`);
+        
         res.json({ ok: true });
-    } catch (e) { res.status(500).json({ erro: e.message }); }
+    } catch (e) { 
+        console.error("Erro ao inserir acesso:", e.message);
+        res.status(500).json({ erro: e.message }); 
+    }
 });
 
-// 5. BUSCAR MOMENTO (Index)
+// 5. BUSCAR MOMENTO
 app.post('/gerar-momento', async (req, res) => {
     try {
         const [rows] = await db.execute('SELECT * FROM historias_geradas ORDER BY id DESC LIMIT 1');
         if (rows.length > 0) {
-            res.json({ sucesso: true, texto: rows[0].texto_historia, imagem: rows[0].caminho_foto, proximaPostagemEm: 0 });
+            res.json({ 
+                sucesso: true, 
+                texto: rows[0].texto_historia, 
+                imagem: rows[0].caminho_foto, 
+                proximaPostagemEm: 0 
+            });
         } else { res.json({ sucesso: false }); }
     } catch (e) { res.status(500).json({ erro: e.message }); }
 });
 
-// 6. BUSCAR HISTÓRICO (Galeria)
+// 6. BUSCAR HISTÓRICO
 app.get('/obter-historico', async (req, res) => {
     try {
         const [rows] = await db.execute('SELECT * FROM historias_arquivo ORDER BY id DESC');
@@ -232,4 +258,9 @@ app.get('/obter-historico', async (req, res) => {
     } catch (e) { res.status(500).json({ erro: e.message }); }
 });
 
-app.listen(3000, () => console.log("🚀 SERVER ON - PORTA 3000"));
+app.listen(3000, () => {
+    console.log("------------------------------------------");
+    console.log("🚀 SERVER ON - PORTA 3000");
+    console.log("📡 Aguardando conexões do GitHub/Ngrok...");
+    console.log("------------------------------------------");
+});
