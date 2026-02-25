@@ -174,7 +174,7 @@ async function conectarBanco() {
 }
 conectarBanco();
 
-const FOTO_PARA_HOJE = "11"; 
+const FOTO_PARA_HOJE = "12"; 
 
 // 1. ESTATÍSTICAS (Adicionado cabeçalho anti-cache)
 app.get('/estatisticas', async (req, res) => {
