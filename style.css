@@ -131,7 +131,7 @@ body {
         height: 280px; 
         top: 0;
     }
-    .rapaz { left: -18px; }
-    .mulher { right: -18px; }
+    .rapaz { left: -10px; }
+    .mulher { right: -10px; }
     .titulo-principal { font-size: 1.6rem; }
 }
