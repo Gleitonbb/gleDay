@@ -122,16 +122,31 @@ body {
 .fechar-btn { color: white; position: absolute; top: 20px; right: 20px; font-weight: bold; cursor: pointer; }
 
 /* --- RESPONSIVIDADE CELULAR --- */
+/* --- RESPONSIVIDADE CELULAR --- */
 @media (max-width: 600px) {
     .container { 
-        max-width: 170px; 
-        margin-top: 50px; /* Empurra o card para baixo para não cobrir o topo das fotos */
+        max-width: 150px; 
+        margin-top: 50px; 
     } 
+
+    /* Removemos o height fixo da .decoracao para usar os individuais abaixo */
     .decoracao { 
-        height: 280px; 
         top: 0;
     }
-    .rapaz { left: -10px; }
-    .mulher { right: -10px; }
+
+    /* Rapaz um pouco maior no celular */
+    .rapaz { 
+        margin-left: 10px;
+        left: -10px; 
+        height: 310px; /* Aumentado (era 280px) */
+    }
+
+    /* Mulher menor no celular */
+    .mulher { 
+        margin-top: 80px;
+        right: -10px; 
+        height: 230px; /* Reduzido (era 280px) */
+    }
+
     .titulo-principal { font-size: 1.6rem; }
 }
