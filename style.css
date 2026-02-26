@@ -4,7 +4,7 @@
 body {
   
     /* O azul começa na esquerda e vai para o branco na direita */
-    background: linear-gradient(to right, rgba(185, 185, 187, 0.158), white);
+    background: linear-gradient(to right, rgba(224, 227, 230, 0.158), white);
   
     font-family: 'Poppins', sans-serif; 
     display: flex;
